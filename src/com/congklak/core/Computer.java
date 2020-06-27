@@ -8,8 +8,8 @@ import com.congklak.ui.GameMenu;
 
 public class Computer extends Player {
 	
-	public Queue<Integer> pick = null;
-	public ArrayList<Solution> solutions = null;
+	protected Queue<Integer> pick = null;
+	protected ArrayList<Solution> solutions = null;
 	
 	private String computerNames[] = new String[]{
 		"Christian",
@@ -26,6 +26,27 @@ public class Computer extends Player {
 		solutions = new ArrayList<Solution>();
 	}
 	
+	public Queue<Integer> getPick() {
+		Queue<Integer> currentQueue = new LinkedList<>();
+		for(Integer value: pick) {
+			currentQueue.add(value);
+		}
+		return currentQueue;
+	}
+	
+	public ArrayList<Solution> getSolutions()  {
+		ArrayList<Solution> currentSolution = new ArrayList<>();
+		for(Solution value: solutions) {
+			try {
+				currentSolution.add((Solution) value.clone());
+			}
+			catch(CloneNotSupportedException e) {
+				e.printStackTrace();
+			}
+		}
+		return currentSolution;
+	}
+
 	public static String generateName() {
 		Computer comp = new Computer("");
 		return comp.computerNames[ GameMenu.rand.nextInt(comp.computerNames.length) ];

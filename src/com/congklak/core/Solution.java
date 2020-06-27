@@ -24,6 +24,11 @@ public class Solution implements Comparable<Solution>
 	public int getResult() {
 		return result;
 	}
+	
+	@Override
+	public Object clone() throws CloneNotSupportedException {
+		return new Solution(picks, result);
+	}
 
 	@Override
 	public int compareTo(Solution o) {

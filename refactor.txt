@@ -23,23 +23,24 @@ modifier dari attribut player dan mainmenu dari private jadi protected agar bisa
 lalu membuat abstract function create untuk pembuatan player/computer
 
 4.
-source: class Solution
+source: class Solution, attribute arraylist picks dan int result
 smell: deficient encapsulation
 problem: access modifier attributenya public
 solution: bikin access modifiernya menjadi private dan tambahkan fungsi getter dan constructor, lalu agar tidak terjadi
 leaky saat getter list, maka kita melakukan deep copy untuk getter listnya
 
 5.
-source: class GameState
+source: class GameState, attribute player dan computer
 smell: deficient encapsulation
 problem: access modifier attributenya public
-solution: 
+solution: bikin access modifiernya menjadi private dan tambahkan fungsi getter
 
 6.
-source: 
-smell: 
-problem: 
-solution: 
+source: class Computer, attribute picks and solution
+smell: deficient encapsulation
+problem: access modifier attributenya public
+solution: bikin access modifiernya menjadi private dan tambahkan fungsi getter, dan tambahkan deep copy agar
+tidak terjadi leaky saat get queue dan list.
 
 7.
 source: 

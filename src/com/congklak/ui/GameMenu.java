@@ -92,7 +92,7 @@ public class GameMenu {
 				hole = currentPlayerMenu.inputHole();
 			} else { // is computer
 				Computer comp = (Computer) player2.getPlayer();
-				if (comp.pick.isEmpty()) {
+				if (comp.getPick().isEmpty()) {
 					GameState state = new GameState(player1.getPlayer().clone(), player2.getPlayer().clone());
 					double ratio = 0;
 					switch (level) {
@@ -113,12 +113,12 @@ public class GameMenu {
 							ratio = 0.10;
 							break;
 					}
-					int bound = (int) Math.ceil(comp.solutions.size() * ratio);
-					for (Integer pick : comp.solutions.get(rand.nextInt(bound)).getPicks()) {
-						comp.pick.add(pick);
+					int bound = (int) Math.ceil(comp.getSolutions().size() * ratio);
+					for (Integer pick : comp.getSolutions().get(rand.nextInt(bound)).getPicks()) {
+						comp.getPick().add(pick);
 					}
 				}
-				hole = comp.pick.remove();
+				hole = comp.getPick().remove();
 				System.out.println("Computer choose: " + hole);
 				System.out.print("Press enter to continue");
 				mainMenu.scan.nextLine();
