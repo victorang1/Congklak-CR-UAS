@@ -3,7 +3,6 @@ import java.util.Scanner;
 
 public class MainMenu {
 	public Scanner scan = new Scanner(System.in);
-	private GameMenu gameMenu = null;
 	
 	public MainMenu() {
 		int input = -1;
@@ -28,11 +27,11 @@ public class MainMenu {
 				input = -1;
 			}
 			switch (input) {
-				case 1: gameMenu = new GameMenu(this); break;
-				case 2: gameMenu = new GameMenu(this, GameMenu.EASY); break;
-				case 3: gameMenu = new GameMenu(this, GameMenu.MEDIUM); break;
-				case 4: gameMenu = new GameMenu(this, GameMenu.HARD); break;
-				case 5: gameMenu = new GameMenu(this, GameMenu.EXPERT); break;
+				case 1: new GameMenu(this); break;
+				case 2: new GameMenu(this, GameMenu.EASY); break;
+				case 3: new GameMenu(this, GameMenu.MEDIUM); break;
+				case 4: new GameMenu(this, GameMenu.HARD); break;
+				case 5: new GameMenu(this, GameMenu.EXPERT); break;
 				case 6: printHowToPlay(); break;
 			}
 		} while(input != 7);

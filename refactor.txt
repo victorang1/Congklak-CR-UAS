@@ -43,7 +43,17 @@ solution: bikin access modifiernya menjadi private dan tambahkan fungsi getter, 
 tidak terjadi leaky saat get queue dan list.
 
 7.
-source: class MainMenu, GameMenu, PlayerMenu, 
-smell: 
-problem: 
-solution: 
+source: class MainMenu dan class HowToPlayMenu
+smell: Cyclically-Dependent Modularization
+problem: terjadi dikarenakan main menu dan HowToPlayMenu saling memiliki dependency satu sama lain
+solution: memindahkan method yang atau attribut yang memiliki depedency ke class lainnya. Pada kasus ini saya memindahkan
+method print yang terdapat dalam HowToPlayMenu ke class MainMenu, sehingga class MainMenu tidak memerlukan atau tidak
+ada depedency dengan class HowToPlayMenu lagi.
+
+7.
+source: class MainMenu dan class GameMenu
+smell: Cyclically-Dependent Modularization
+problem: terjadi dikarenakan class MainMenu dan GameMenu saling memiliki dependency satu sama lain (class MainMenu
+memiliki attribut GameMenu dan class GameMenu mempunyai attribut MainMenu)
+solution: menghapus attribute GameMenu pada MainMenu dikarenakan attribute tersebut sama sekali tidak digunakan karena
+pada switch casenya kita sekedar hanya ingin men-trigger constructor dari class GameMenu
