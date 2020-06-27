@@ -12,8 +12,8 @@ import com.congklak.core.Player;
 
 public class GameMenu {
 	
-	private PlayerMenu player1 = null;
-	private PlayerMenu player2 = null;
+	private CharacterMenu player1 = null;
+	private CharacterMenu player2 = null;
 	
 	public static final int EASY = 1;
 	public static final int MEDIUM = 2;
@@ -35,11 +35,11 @@ public class GameMenu {
 		mode = new VersusPlayerMode();
 		// player 1
 		player1 = new PlayerMenu(mainMenu, "Player 1");
-		player1.createPlayer();
+		player1.createCharacter();
 		
 		// player 2
 		player2 = new PlayerMenu(mainMenu, "Player 2");
-		player2.createPlayer();
+		player2.createCharacter();
 		
 		player1.getPlayer().setOpponent(player2.getPlayer());
 		player2.getPlayer().setOpponent(player1.getPlayer());
@@ -52,11 +52,11 @@ public class GameMenu {
 		this.level = level;
 		// player
 		player1 = new PlayerMenu(mainMenu, "Player");
-		player1.createPlayer();
+		player1.createCharacter();
 		
 		// computer
-		player2 = new PlayerMenu(mainMenu, "Computer");
-		player2.createComputer(level);
+		player2 = new ComputerMenu(mainMenu, "Computer", level);
+		player2.createCharacter();
 		
 		player1.getPlayer().setOpponent(player2.getPlayer());
 		player2.getPlayer().setOpponent(player1.getPlayer());
@@ -66,7 +66,7 @@ public class GameMenu {
 	private void play() {
 		while (true) {
 			int hole = -1;
-			PlayerMenu currentPlayerMenu = null;
+			CharacterMenu currentPlayerMenu = null;
 			String label = ""; 
 			if (turn % 2 == 1) {
 				currentPlayerMenu = player1;

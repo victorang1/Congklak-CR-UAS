@@ -14,6 +14,15 @@ dan di dalam class ini, hanya punya satu method saja
 solution: memindahkan method dalam class HowToPlayMenu ke class MainMenu
 
 3.
+source: class PlayerMenu
+smell: Multifaceted Abstraction
+problem: class ini memiliki lebih dari satu tanggung jawab melanggar SRP. Class ini bertanggung jawab
+atas pembuatan player biasa dan player computer dan juga bertanggung jawab atas menampilkan player menu
+solution: membuat parent Character menu dan membuat class baru bernama ComputerMenu, mengubah access
+modifier dari attribut player dan mainmenu dari private jadi protected agar bisa digunakan oleh subclassnya
+lalu membuat abstract function create untuk pembuatan player/computer
+
+2.
 source: 
 smell: 
 problem: 
