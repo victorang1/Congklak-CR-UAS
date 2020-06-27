@@ -43,7 +43,7 @@ solution: bikin access modifiernya menjadi private dan tambahkan fungsi getter, 
 tidak terjadi leaky saat get queue dan list.
 
 7.
-source: 
+source: class MainMenu, GameMenu, PlayerMenu, 
 smell: 
 problem: 
 solution: 

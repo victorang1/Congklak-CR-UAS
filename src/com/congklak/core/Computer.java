@@ -27,11 +27,7 @@ public class Computer extends Player {
 	}
 	
 	public Queue<Integer> getPick() {
-		Queue<Integer> currentQueue = new LinkedList<>();
-		for(Integer value: pick) {
-			currentQueue.add(value);
-		}
-		return currentQueue;
+		return pick;
 	}
 	
 	public ArrayList<Solution> getSolutions()  {
