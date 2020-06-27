@@ -1,6 +1,10 @@
 package com.congklak.ui;
 
-public enum Mode{
-	PLAYER_VS_PLAYER,
-	PLAYER_VS_COMPUTER
+public abstract class Mode {
+	
+	private String playerOneLabel;
+	private String playerTwoLabel;
+	
+	protected abstract String getPlayerOneLabel();
+	protected abstract String getPlayerTwoLabel();
 }

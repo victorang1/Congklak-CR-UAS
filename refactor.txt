@@ -1,5 +1,7 @@
 1.
-source: class Foo, method bar() dan method baz()
-smell: duplicate code
-problem: method bar() dan baz() memiliki code yang mirip, hanya berbeda beberapa hal yang bisa dijadikan variabel.
-solution: membuat angka di dalam kedua method menjadi variabel, kemudian extract method menjadi qux().
+source: class GameMenu line 69-73 & line 212-216 dan enum Mode
+smell: missing abstraction
+problem: menggunakan string untuk label player yang bergantung dengan mode yang dipilih, apabila dikemudian
+hari ada mode computer vs computer maka akan ada if tambahan lagi di class GameMenu
+solution: membuat abstraction class untuk class Mode, dan subclass VersusPlayerMode dan VersusComputerMode
+yang memiliki atribut playeronelabel dan playertwolabel

@@ -32,7 +32,7 @@ public class GameMenu {
 	
 	public GameMenu(MainMenu mainMenu) {
 		this.mainMenu = mainMenu;
-		mode = Mode.PLAYER_VS_PLAYER;
+		mode = new VersusPlayerMode();
 		// player 1
 		player1 = new PlayerMenu(mainMenu, "Player 1");
 		player1.createPlayer();
@@ -48,7 +48,7 @@ public class GameMenu {
 	
 	public GameMenu(MainMenu mainMenu, int level) {
 		this.mainMenu = mainMenu;
-		mode = Mode.PLAYER_VS_COMPUTER;
+		mode = new VersusComputerMode();
 		this.level = level;
 		// player
 		player1 = new PlayerMenu(mainMenu, "Player");
@@ -66,19 +66,14 @@ public class GameMenu {
 	private void play() {
 		while (true) {
 			int hole = -1;
-			String player1label = "Player 1", player2label = "Player 2";
-			if (mode == Mode.PLAYER_VS_COMPUTER) {
-				player1label = "Player";
-				player2label = "Computer";
-			}
 			PlayerMenu currentPlayerMenu = null;
 			String label = ""; 
 			if (turn % 2 == 1) {
 				currentPlayerMenu = player1;
-				label = player1label;
+				label = mode.getPlayerOneLabel();
 			} else {
 				currentPlayerMenu = player2;
-				label = player2label;
+				label = mode.getPlayerTwoLabel();
 			}
 			
 			Player currentPlayer = currentPlayerMenu.getPlayer();
@@ -209,18 +204,13 @@ public class GameMenu {
 	}
 	
 	private void printBoard() {
-		String player1label = "Player 1", player2label = "Player 2";
-		if (mode == Mode.PLAYER_VS_COMPUTER) {
-			player1label = "Player";
-			player2label = "Computer";
-		}
 		mainMenu.printLine();
 
 		System.out.println("               7  6  5  4  3  2  1");
 		System.out.println("             +--+--+--+--+--+--+--+");
 		System.out.printf( " %-10s  |%2d|%2d|%2d|%2d|%2d|%2d|%2d|\n", player2.getPlayer().getName(), player2.getPlayer().getValueHole(6), player2.getPlayer().getValueHole(5), player2.getPlayer().getValueHole(4), player2.getPlayer().getValueHole(3), player2.getPlayer().getValueHole(2), player2.getPlayer().getValueHole(1), player2.getPlayer().getValueHole(0));
 		System.out.println("          +--+--+--+--+--+--+--+--+--+");
-		System.out.printf( " %-8s |%2d|                    |%2d| %8s\n", player2label, player2.getPlayer().getBig(), player1.getPlayer().getBig(), player1label);
+		System.out.printf( " %-8s |%2d|                    |%2d| %8s\n", mode.getPlayerTwoLabel(), player2.getPlayer().getBig(), player1.getPlayer().getBig(), mode.getPlayerOneLabel());
 		System.out.println("          +--+--+--+--+--+--+--+--+--+");
 		System.out.printf( "             |%2d|%2d|%2d|%2d|%2d|%2d|%2d|  %10s\n", player1.getPlayer().getValueHole(0), player1.getPlayer().getValueHole(1), player1.getPlayer().getValueHole(2), player1.getPlayer().getValueHole(3), player1.getPlayer().getValueHole(4), player1.getPlayer().getValueHole(5), player1.getPlayer().getValueHole(6), player1.getPlayer().getName());
 		System.out.println("             +--+--+--+--+--+--+--+");
