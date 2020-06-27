@@ -14,11 +14,12 @@ public class Solution implements Comparable<Solution>
 	}
 	
 	public ArrayList<Integer> getPicks() {
-		ArrayList<Integer> currentPicks = new ArrayList<Integer>();
-		for(Integer value: picks) {
-			currentPicks.add(value);
-		}
-		return currentPicks;
+//		ArrayList<Integer> currentPicks = new ArrayList<Integer>();
+//		for(Integer value: picks) {
+//			currentPicks.add(value);
+//		}
+//		return currentPicks;
+		return picks;
 	}
 	
 	public int getResult() {

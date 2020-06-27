@@ -1,7 +1,7 @@
 package com.congklak.ui;
 import java.util.Scanner;
 
-public class MainMenu {
+public class MainMenu implements Printable {
 	public Scanner scan = new Scanner(System.in);
 	
 	public MainMenu() {
@@ -28,21 +28,22 @@ public class MainMenu {
 			}
 			switch (input) {
 				case 1: new GameMenu(this); break;
-				case 2: new GameMenu(this, GameMenu.EASY); break;
-				case 3: new GameMenu(this, GameMenu.MEDIUM); break;
-				case 4: new GameMenu(this, GameMenu.HARD); break;
-				case 5: new GameMenu(this, GameMenu.EXPERT); break;
+				case 2: new GameMenu(this, new Easy()); break;
+				case 3: new GameMenu(this, new Medium()); break;
+				case 4: new GameMenu(this, new Hard()); break;
+				case 5: new GameMenu(this, new Expert()); break;
 				case 6: printHowToPlay(); break;
 			}
 		} while(input != 7);
 	}
-	
+
+	@Override
 	public void printLine() {
 		for (int i = 0; i < 30; i++) {
 			System.out.println();
 		}
 	}
-
+	
 	public static void main(String[] args) {
 		new MainMenu();
 	}

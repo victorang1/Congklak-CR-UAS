@@ -1,6 +1,7 @@
 package com.congklak.core;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.Queue;
 
@@ -19,6 +20,12 @@ public class Computer extends Player {
 		"Valent",
 		"Yudy"
 	};
+	
+	public Computer(String name, int level) {
+		super(name);
+		pick = new LinkedList<>();
+		solutions = new ArrayList<Solution>();
+	}
 
 	public Computer(String name) {
 		super(name);
@@ -31,16 +38,17 @@ public class Computer extends Player {
 	}
 	
 	public ArrayList<Solution> getSolutions()  {
-		ArrayList<Solution> currentSolution = new ArrayList<>();
-		for(Solution value: solutions) {
-			try {
-				currentSolution.add((Solution) value.clone());
-			}
-			catch(CloneNotSupportedException e) {
-				e.printStackTrace();
-			}
-		}
-		return currentSolution;
+//		ArrayList<Solution> currentSolution = new ArrayList<>();
+//		for(Solution value: solutions) {
+//			try {
+//				currentSolution.add((Solution) value.clone());
+//			}
+//			catch(CloneNotSupportedException e) {
+//				e.printStackTrace();
+//			}
+//		}
+//		return currentSolution;
+		return solutions;
 	}
 
 	public static String generateName() {
@@ -60,6 +68,12 @@ public class Computer extends Player {
 				picks.remove(picks.size() - 1);
 			}
 		}
+	}
+	
+	public void doCombination(GameState state, int maxLevel) {
+		this.solutions.clear();
+		combination(state, new ArrayList<>(), maxLevel);
+		Collections.sort(this.solutions);
 	}
 	
 	protected void simulateTurn(GameState state, ArrayList<Integer> picks, int maxLevel) {

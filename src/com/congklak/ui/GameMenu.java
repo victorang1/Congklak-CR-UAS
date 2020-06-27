@@ -1,13 +1,11 @@
 package com.congklak.ui;
 
+import java.util.ArrayList;
 import java.util.Random;
+import java.util.Scanner;
 
 import com.congklak.core.Computer;
-import com.congklak.core.EasyComputer;
-import com.congklak.core.ExpertComputer;
 import com.congklak.core.GameState;
-import com.congklak.core.HardComputer;
-import com.congklak.core.MediumComputer;
 import com.congklak.core.Player;
 
 public class GameMenu {
@@ -15,30 +13,24 @@ public class GameMenu {
 	private CharacterMenu player1 = null;
 	private CharacterMenu player2 = null;
 	
-	public static final int EASY = 1;
-	public static final int MEDIUM = 2;
-	public static final int HARD = 3;
-	public static final int EXPERT = 4;
-	
 	public static final int BIG_HOLE = 8;
 	
 	private int turn = 1;
+	private Printable printable;
 	
 	public static Random rand = new Random();
+	private Scanner scan = new Scanner(System.in);
 	
-	private Mode mode = null;
-	private int level = 0;
-	private MainMenu mainMenu = null;
+	private Difficulty difficulty;
 	
-	public GameMenu(MainMenu mainMenu) {
-		this.mainMenu = mainMenu;
-		mode = new VersusPlayerMode();
+	public GameMenu(Printable printable) {
+		this.printable = printable;
 		// player 1
-		player1 = new PlayerMenu(mainMenu, "Player 1");
+		player1 = new PlayerMenu("Player 1");
 		player1.createCharacter();
 		
 		// player 2
-		player2 = new PlayerMenu(mainMenu, "Player 2");
+		player2 = new PlayerMenu("Player 2");
 		player2.createCharacter();
 		
 		player1.getPlayer().setOpponent(player2.getPlayer());
@@ -46,16 +38,15 @@ public class GameMenu {
 		play();
 	}
 	
-	public GameMenu(MainMenu mainMenu, int level) {
-		this.mainMenu = mainMenu;
-		mode = new VersusComputerMode();
-		this.level = level;
+	public GameMenu(Printable printable, Difficulty difficulty) {
+		this.printable = printable;
+		this.difficulty = difficulty;
 		// player
-		player1 = new PlayerMenu(mainMenu, "Player");
+		player1 = new PlayerMenu("Player");
 		player1.createCharacter();
 		
 		// computer
-		player2 = new ComputerMenu(mainMenu, "Computer", level);
+		player2 = new ComputerMenu("Computer", difficulty.getLevel());
 		player2.createCharacter();
 		
 		player1.getPlayer().setOpponent(player2.getPlayer());
@@ -70,10 +61,10 @@ public class GameMenu {
 			String label = ""; 
 			if (turn % 2 == 1) {
 				currentPlayerMenu = player1;
-				label = mode.getPlayerOneLabel();
+				label = player1.getLabel();
 			} else {
 				currentPlayerMenu = player2;
-				label = mode.getPlayerTwoLabel();
+				label = player2.getLabel();
 			}
 			
 			Player currentPlayer = currentPlayerMenu.getPlayer();
@@ -83,7 +74,7 @@ public class GameMenu {
 				printBoard();
 				System.out.println(currentPlayer.getName() + " has't move");
 				System.out.print("Press enter to continue");
-				mainMenu.scan.nextLine();
+				scan.nextLine();
 				continue;
 			}
 			
@@ -94,26 +85,8 @@ public class GameMenu {
 				Computer comp = (Computer) player2.getPlayer();
 				if (comp.getPick().isEmpty()) {
 					GameState state = new GameState(player1.getPlayer().clone(), player2.getPlayer().clone());
-					double ratio = 0;
-					switch (level) {
-						case EASY:
-							((EasyComputer) comp).combination(state);
-							ratio = 0.70;
-							break;
-						case MEDIUM:
-							((MediumComputer) comp).combination(state);
-							ratio = 0.50;
-							break;
-						case HARD:
-							((HardComputer) comp).combination(state);
-							ratio = 0.30;
-							break;
-						case EXPERT:
-							((ExpertComputer) comp).combination(state);
-							ratio = 0.10;
-							break;
-					}
-					int bound = (int) Math.ceil(comp.getSolutions().size() * ratio);
+					comp.doCombination(state, difficulty.getLevel());
+					int bound = (int) Math.ceil(comp.getSolutions().size() * difficulty.getRatio());
 					for (Integer pick : comp.getSolutions().get(rand.nextInt(bound)).getPicks()) {
 						comp.getPick().add(pick);
 					}
@@ -121,7 +94,7 @@ public class GameMenu {
 				hole = comp.getPick().remove();
 				System.out.println("Computer choose: " + hole);
 				System.out.print("Press enter to continue");
-				mainMenu.scan.nextLine();
+				scan.nextLine();
 			}
 			
 			int take = 0;
@@ -189,7 +162,7 @@ public class GameMenu {
 				printBoard();
 				System.out.println("Change turns");
 				System.out.print("Press enter to continue");
-				mainMenu.scan.nextLine();
+				scan.nextLine();
 			}
 		}
 		
@@ -204,13 +177,13 @@ public class GameMenu {
 	}
 	
 	private void printBoard() {
-		mainMenu.printLine();
+		printable.printLine();
 
 		System.out.println("               7  6  5  4  3  2  1");
 		System.out.println("             +--+--+--+--+--+--+--+");
 		System.out.printf( " %-10s  |%2d|%2d|%2d|%2d|%2d|%2d|%2d|\n", player2.getPlayer().getName(), player2.getPlayer().getValueHole(6), player2.getPlayer().getValueHole(5), player2.getPlayer().getValueHole(4), player2.getPlayer().getValueHole(3), player2.getPlayer().getValueHole(2), player2.getPlayer().getValueHole(1), player2.getPlayer().getValueHole(0));
 		System.out.println("          +--+--+--+--+--+--+--+--+--+");
-		System.out.printf( " %-8s |%2d|                    |%2d| %8s\n", mode.getPlayerTwoLabel(), player2.getPlayer().getBig(), player1.getPlayer().getBig(), mode.getPlayerOneLabel());
+		System.out.printf( " %-8s |%2d|                    |%2d| %8s\n", player2.getLabel(), player2.getPlayer().getBig(), player1.getPlayer().getBig(), player1.getLabel());
 		System.out.println("          +--+--+--+--+--+--+--+--+--+");
 		System.out.printf( "             |%2d|%2d|%2d|%2d|%2d|%2d|%2d|  %10s\n", player1.getPlayer().getValueHole(0), player1.getPlayer().getValueHole(1), player1.getPlayer().getValueHole(2), player1.getPlayer().getValueHole(3), player1.getPlayer().getValueHole(4), player1.getPlayer().getValueHole(5), player1.getPlayer().getValueHole(6), player1.getPlayer().getName());
 		System.out.println("             +--+--+--+--+--+--+--+");

@@ -1,5 +1,7 @@
 package com.congklak.ui;
 
+import java.util.Scanner;
+
 import com.congklak.core.Hint;
 import com.congklak.core.Player;
 
@@ -7,10 +9,9 @@ public abstract class CharacterMenu {
 	
 	protected Player player;
 	public String label;
-	protected MainMenu mainMenu = null;
+	protected Scanner scan = new Scanner(System.in);
 	
-	public CharacterMenu(MainMenu mainMenu, String label) {
-		this.mainMenu = mainMenu;
+	public CharacterMenu(String label) {
 		this.label = label;
 		this.player = null;
 	}
@@ -34,11 +35,11 @@ public abstract class CharacterMenu {
 				System.out.println("Hint: " + c.getHint(player.getOpponent(), player));
 			}
 			System.out.print("Choose hole(1-7): ");
-			if (mainMenu.scan.hasNextInt()) {
-				hole = mainMenu.scan.nextInt();
+			if (scan.hasNextInt()) {
+				hole = scan.nextInt();
 			}
-			if (mainMenu.scan.hasNextLine()) {
-				mainMenu.scan.nextLine();
+			if (scan.hasNextLine()) {
+				scan.nextLine();
 			}
 		} while(hole < 1 || hole > 7 || player.getValueHole(hole - 1) == 0);
 		return hole;
@@ -47,12 +48,12 @@ public abstract class CharacterMenu {
 	public void printDraw() {
 		System.out.println("Draw");
 		System.out.print("Press enter to continue");
-		mainMenu.scan.nextLine();
+		scan.nextLine();
 	}
 	
 	public void printWin() {
 		System.out.println(player.getName() + " win");
 		System.out.print("Press enter to continue");
-		mainMenu.scan.nextLine();
+		scan.nextLine();
 	}; 
 }

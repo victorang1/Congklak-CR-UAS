@@ -1,10 +1,9 @@
 1.
 source: class GameMenu line 69-73 & line 212-216 dan enum Mode
-smell: missing abstraction
-problem: menggunakan string untuk label player yang bergantung dengan mode yang dipilih, apabila dikemudian
-hari ada mode computer vs computer maka akan ada if tambahan lagi di class GameMenu
-solution: membuat abstraction class untuk class Mode, dan subclass VersusPlayerMode dan VersusComputerMode
-dan method abstract untuk dipakai di subclass mode-modenya
+smell: broken modularization
+problem: isi dari class enum tersebut atau class enum tersebut hanya berguna untuk menentukan label, padahal label
+dapat didapat dari player1.getLabel() pada playermenu
+solution: membuang enum Mode dan mengganti if mode nya dengan player1.getLabel() atau player2.getLabel()
 
 2.
 source: class HowToPlayMenu
@@ -14,11 +13,14 @@ dan di dalam class ini, hanya punya satu method saja
 solution: memindahkan method dalam class HowToPlayMenu ke class MainMenu
 
 3.
-source: class PlayerMenu
-smell: Multifaceted Abstraction
-problem: class ini memiliki lebih dari satu tanggung jawab melanggar SRP. Class ini bertanggung jawab
+source: class PlayerMenu function createPlayer dan createComputer
+smell: Multifaceted Abstraction, Missing Encapsulation
+problem: 
+- Multifaceted class ini memiliki lebih dari satu tanggung jawab melanggar SRP. Class ini bertanggung jawab
 atas pembuatan player biasa dan player computer dan juga bertanggung jawab atas menampilkan player menu
-solution: membuat parent Character menu dan membuat class baru bernama ComputerMenu, mengubah access
+- problem Missing Encapsulation dikarenakan class ini memiliki banyak variasi bergantung pada service yang dibutuhkan.
+Misalnya service untuk membuat player atau service untuk membuat computer.
+solution: membuat parent CharacterMenu dan membuat class baru bernama ComputerMenu, mengubah access
 modifier dari attribut player dan mainmenu dari private jadi protected agar bisa digunakan oleh subclassnya
 lalu membuat abstract function create untuk pembuatan player/computer
 
@@ -50,10 +52,31 @@ solution: memindahkan method yang atau attribut yang memiliki depedency ke class
 method print yang terdapat dalam HowToPlayMenu ke class MainMenu, sehingga class MainMenu tidak memerlukan atau tidak
 ada depedency dengan class HowToPlayMenu lagi.
 
-7.
+8.
 source: class MainMenu dan class GameMenu
 smell: Cyclically-Dependent Modularization
 problem: terjadi dikarenakan class MainMenu dan GameMenu saling memiliki dependency satu sama lain (class MainMenu
 memiliki attribut GameMenu dan class GameMenu mempunyai attribut MainMenu)
-solution: menghapus attribute GameMenu pada MainMenu dikarenakan attribute tersebut sama sekali tidak digunakan karena
-pada switch casenya kita sekedar hanya ingin men-trigger constructor dari class GameMenu
+solution: menghapus passing parameter MainMenu saat membuat GameMenu dan membuat interfacce untuk diimplement di mainMenu
+dan mengoper interface tersebut sebagai parameter ke class GameMenu
+
+9.
+source: class EasyComputer, MediumComputer, HardComputer, ExpertComputer
+smell: Unnecessary Hierarchy, Unfactored Hierarchy, Wide Hierarchy
+problem:
+- Unnecessary Hierarchy dikarenakan masing-masing dari keempat class tersebut menggunakan function yang sama hanya
+berbeda pada level saja (bisa dijadiin attribut levelnya)
+- Unfactored Hierarchy, salah satu ciri dari unfactored hierarchy adalah adanya code segments yang sama pada subclassnya
+atau sibling sesama parent Computer
+solution: extract method ke class parent
+
+10.
+source: class GameMenu function play di switch casenya line 103-120
+smell: Unexploited Encapsulation, Missing Abstraction
+problem: pengecekan level lalu melakukan type cast sesuai level yang dipilih dan juga sekaligus menentukan ratio
+berdasarkan level yang dipilih yang menyebabkan terjadinya switch case, di mana ketika ada difficult baru, akan adanya
+penambahan switch statement di class GameMenunya
+untuk problem missing abstraction dikarenakan primitive obssesion yang menggunakan int (yg berguna sebagai flag) untuk
+mengecek berbagai level
+solution: melakukan polymorphism dengan membuat class Difficulty di mana memiliki atribut ratio yang di masing2
+subclassnya mengembalikan ratio sesuai level yang dipilih
