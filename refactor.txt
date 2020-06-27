@@ -5,3 +5,16 @@ problem: menggunakan string untuk label player yang bergantung dengan mode yang 
 hari ada mode computer vs computer maka akan ada if tambahan lagi di class GameMenu
 solution: membuat abstraction class untuk class Mode, dan subclass VersusPlayerMode dan VersusComputerMode
 dan method abstract untuk dipakai di subclass mode-modenya
+
+2.
+source: class HowToPlayMenu
+smell: imperative abstraction
+problem: imperative abstraction terjadi ketika sebuah operasi dibuat menjadi sebuah class,
+dan di dalam class ini, hanya punya satu method saja
+solution: memindahkan method dalam class HowToPlayMenu ke class MainMenu
+
+3.
+source: 
+smell: 
+problem: 
+solution: 
