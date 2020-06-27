@@ -37,7 +37,7 @@ public class Computer extends Player {
 			return;
 		}
 		for (int i = 1; i <= 7; i++) {
-			if(state.computer.getValueHole(i - 1) > 0) {
+			if(state.getComputer().getValueHole(i - 1) > 0) {
 				picks.add(i);
 				simulateTurn(state.clone(), picks, maxLevel);
 				picks.remove(picks.size() - 1);
@@ -47,7 +47,7 @@ public class Computer extends Player {
 	
 	protected void simulateTurn(GameState state, ArrayList<Integer> picks, int maxLevel) {
 		int hole = picks.get(picks.size() - 1);
-		Player currentPlayer = state.computer;
+		Player currentPlayer = state.getComputer();
 		
 		int take = 0;
 		int currentIndex = hole;
@@ -57,7 +57,7 @@ public class Computer extends Player {
 		while (take > 0) {
 			++currentIndex;
 			// skip opponent big hole
-			if (currentPlayer == state.player && currentIndex == GameMenu.BIG_HOLE) {
+			if (currentPlayer == state.getPlayer() && currentIndex == GameMenu.BIG_HOLE) {
 				++currentIndex;
 				continue;
 			}
@@ -82,11 +82,11 @@ public class Computer extends Player {
 		}
 		
 		// take from opponent
-		if (currentIndex < GameMenu.BIG_HOLE && currentPlayer == state.computer) {
+		if (currentIndex < GameMenu.BIG_HOLE && currentPlayer == state.getComputer()) {
 			int indexOpponent = 7 - currentIndex;
-			int takeOpponent = state.player.getValueHole(indexOpponent);
-			state.player.setValueHole(indexOpponent, 0);
-			state.computer.setValueHole(currentIndex - 1, 0);
+			int takeOpponent = state.getPlayer().getValueHole(indexOpponent);
+			state.getPlayer().setValueHole(indexOpponent, 0);
+			state.getComputer().setValueHole(currentIndex - 1, 0);
 			currentPlayer.setBig(currentPlayer.getBig() + takeOpponent + 1);
 		}
 		
@@ -99,7 +99,7 @@ public class Computer extends Player {
 	
 	@SuppressWarnings("unchecked")
 	private void addSolution(GameState state, ArrayList<Integer> picks) {
-		Solution data = new Solution((ArrayList<Integer>) picks.clone(), state.computer.getBig());
+		Solution data = new Solution((ArrayList<Integer>) picks.clone(), state.getComputer().getBig());
 		solutions.add(data);
 	}
 }

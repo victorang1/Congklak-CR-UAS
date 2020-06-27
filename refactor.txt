@@ -30,9 +30,9 @@ solution: bikin access modifiernya menjadi private dan tambahkan fungsi getter d
 leaky saat getter list, maka kita melakukan deep copy untuk getter listnya
 
 5.
-source: 
-smell: 
-problem: 
+source: class GameState
+smell: deficient encapsulation
+problem: access modifier attributenya public
 solution: 
 
 6.
