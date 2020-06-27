@@ -99,9 +99,7 @@ public class Computer extends Player {
 	
 	@SuppressWarnings("unchecked")
 	private void addSolution(GameState state, ArrayList<Integer> picks) {
-		Solution data = new Solution();
-		data.picks = (ArrayList<Integer>) picks.clone();
-		data.result = state.computer.getBig();
+		Solution data = new Solution((ArrayList<Integer>) picks.clone(), state.computer.getBig());
 		solutions.add(data);
 	}
 }

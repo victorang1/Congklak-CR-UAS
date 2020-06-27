@@ -1,11 +1,5 @@
 package com.congklak.ui;
 
-import com.congklak.core.Computer;
-import com.congklak.core.EasyComputer;
-import com.congklak.core.ExpertComputer;
-import com.congklak.core.HardComputer;
-import com.congklak.core.Hint;
-import com.congklak.core.MediumComputer;
 import com.congklak.core.Player;
 
 public class PlayerMenu extends CharacterMenu {

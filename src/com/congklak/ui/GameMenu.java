@@ -114,7 +114,7 @@ public class GameMenu {
 							break;
 					}
 					int bound = (int) Math.ceil(comp.solutions.size() * ratio);
-					for (Integer pick : comp.solutions.get(rand.nextInt(bound)).picks) {
+					for (Integer pick : comp.solutions.get(rand.nextInt(bound)).getPicks()) {
 						comp.pick.add(pick);
 					}
 				}

@@ -22,7 +22,26 @@ solution: membuat parent Character menu dan membuat class baru bernama ComputerM
 modifier dari attribut player dan mainmenu dari private jadi protected agar bisa digunakan oleh subclassnya
 lalu membuat abstract function create untuk pembuatan player/computer
 
-2.
+4.
+source: class Solution
+smell: deficient encapsulation
+problem: access modifier attributenya public
+solution: bikin access modifiernya menjadi private dan tambahkan fungsi getter dan constructor, lalu agar tidak terjadi
+leaky saat getter list, maka kita melakukan deep copy untuk getter listnya
+
+5.
+source: 
+smell: 
+problem: 
+solution: 
+
+6.
+source: 
+smell: 
+problem: 
+solution: 
+
+7.
 source: 
 smell: 
 problem: 

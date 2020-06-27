@@ -4,9 +4,27 @@ import java.util.ArrayList;
 
 public class Solution implements Comparable<Solution>
 {
-	public ArrayList<Integer> picks;
-	public int result;
+	private ArrayList<Integer> picks;
+	private int result;
 	
+	public Solution(ArrayList<Integer> picks, int result) {
+		super();
+		this.picks = picks;
+		this.result = result;
+	}
+	
+	public ArrayList<Integer> getPicks() {
+		ArrayList<Integer> currentPicks = new ArrayList<Integer>();
+		for(Integer value: picks) {
+			currentPicks.add(value);
+		}
+		return currentPicks;
+	}
+	
+	public int getResult() {
+		return result;
+	}
+
 	@Override
 	public int compareTo(Solution o) {
 		return this.result == o.result ? 0 :
