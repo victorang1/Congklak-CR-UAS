@@ -1,0 +1,5 @@
+1.
+source: class Foo, method bar() dan method baz()
+smell: duplicate code
+problem: method bar() dan baz() memiliki code yang mirip, hanya berbeda beberapa hal yang bisa dijadikan variabel.
+solution: membuat angka di dalam kedua method menjadi variabel, kemudian extract method menjadi qux().
