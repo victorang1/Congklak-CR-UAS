@@ -6,13 +6,22 @@ dapat didapat dari player1.getLabel() pada playermenu
 solution: membuang enum Mode dan mengganti if mode nya dengan player1.getLabel() atau player2.getLabel()
 
 2.
-source: class HowToPlayMenu
-smell: imperative abstraction
-problem: imperative abstraction terjadi ketika sebuah operasi dibuat menjadi sebuah class,
-dan di dalam class ini, hanya punya satu method saja
-solution: memindahkan method dalam class HowToPlayMenu ke class MainMenu
+source: class PlayerMenu
+smell: deficient encapsulation
+problem: property public pada label, padahal sudah ada getter untuk property label
+solution: mengubah property public label menjadi private, tidak perlu adanya setter karena sudah ada
+constructor.
 
 3.
+source: class HowToPlayMenu
+smell: imperative abstraction, broken modularization
+problem: imperative abstraction terjadi ketika sebuah operasi dibuat menjadi sebuah class,
+dan di dalam class ini, hanya punya satu method saja. Interfacenya hanya digunakan oleh satu class saja, jadi
+menurut saya itu broken modularization dikarenakan mestinya bisa kita taro saja function tersebut di class
+HowToPlayMenu tanpa harus perlu mengimplement interface.
+solution: memindahkan method dalam class HowToPlayMenu ke class MainMenu
+
+4.
 source: class PlayerMenu function createPlayer dan createComputer
 smell: Multifaceted Abstraction, Missing Encapsulation
 problem: 
@@ -24,27 +33,27 @@ solution: membuat parent CharacterMenu dan membuat class baru bernama ComputerMe
 modifier dari attribut player dan mainmenu dari private jadi protected agar bisa digunakan oleh subclassnya
 lalu membuat abstract function create untuk pembuatan player/computer
 
-4.
+5.
 source: class Solution, attribute arraylist picks dan int result
-smell: deficient encapsulation
+smell: deficient encapsulation, leaky encapsulation
 problem: access modifier attributenya public
 solution: bikin access modifiernya menjadi private dan tambahkan fungsi getter dan constructor, lalu agar tidak terjadi
 leaky saat getter list, maka kita melakukan deep copy untuk getter listnya
 
-5.
+6.
 source: class GameState, attribute player dan computer
-smell: deficient encapsulation
+smell: deficient encapsulation, leaky encapsulation
 problem: access modifier attributenya public
 solution: bikin access modifiernya menjadi private dan tambahkan fungsi getter
 
-6.
+7.
 source: class Computer, attribute picks and solution
-smell: deficient encapsulation
+smell: deficient encapsulation, leaky encapsulation
 problem: access modifier attributenya public
 solution: bikin access modifiernya menjadi private dan tambahkan fungsi getter, dan tambahkan deep copy agar
 tidak terjadi leaky saat get queue dan list.
 
-7.
+8.
 source: class MainMenu dan class HowToPlayMenu
 smell: Cyclically-Dependent Modularization
 problem: terjadi dikarenakan main menu dan HowToPlayMenu saling memiliki dependency satu sama lain
@@ -52,7 +61,7 @@ solution: memindahkan method yang atau attribut yang memiliki depedency ke class
 method print yang terdapat dalam HowToPlayMenu ke class MainMenu, sehingga class MainMenu tidak memerlukan atau tidak
 ada depedency dengan class HowToPlayMenu lagi.
 
-8.
+9.
 source: class MainMenu dan class GameMenu
 smell: Cyclically-Dependent Modularization
 problem: terjadi dikarenakan class MainMenu dan GameMenu saling memiliki dependency satu sama lain (class MainMenu
@@ -60,7 +69,7 @@ memiliki attribut GameMenu dan class GameMenu mempunyai attribut MainMenu)
 solution: menghapus passing parameter MainMenu saat membuat GameMenu dan membuat interfacce untuk diimplement di mainMenu
 dan mengoper interface tersebut sebagai parameter ke class GameMenu
 
-9.
+10.
 source: class EasyComputer, MediumComputer, HardComputer, ExpertComputer
 smell: Unnecessary Hierarchy, Unfactored Hierarchy, Wide Hierarchy
 problem:
@@ -70,7 +79,7 @@ berbeda pada level saja (bisa dijadiin attribut levelnya)
 atau sibling sesama parent Computer
 solution: extract method ke class parent
 
-10.
+11.
 source: class GameMenu function play di switch casenya line 103-120
 smell: Unexploited Encapsulation, Missing Abstraction
 problem: pengecekan level lalu melakukan type cast sesuai level yang dipilih dan juga sekaligus menentukan ratio
@@ -80,3 +89,16 @@ untuk problem missing abstraction dikarenakan primitive obssesion yang menggunak
 mengecek berbagai level
 solution: melakukan polymorphism dengan membuat class Difficulty di mana memiliki atribut ratio yang di masing2
 subclassnya mengembalikan ratio sesuai level yang dipilih
+
+12.
+source: class GameMenu method play()
+smell: Insufficient Modularization
+problem: apabila kita hitung Cyclomatic complexitiesnya maka pasti akan lebih besar nilainya dimana cyclomatic complexities akan semakin buruk
+apabila semakin besar angkanya
+solution: extract method agar cyclomatic complexities dari method tersebut lebih kecil dari awalnya
+
+13.
+source: class GameMenu method play() line 75
+smell: Primitive obsession
+problem: menggunakan string baru untuk menyimpan label dari pemain
+solution: kita bisa mendapatkan label dari currentPlayerMenu tanpa harus menampungnya ke string baru.

@@ -11,6 +11,7 @@ public class Computer extends Player {
 	
 	protected Queue<Integer> pick = null;
 	protected ArrayList<Solution> solutions = null;
+	private int level;
 	
 	private String computerNames[] = new String[]{
 		"Christian",
@@ -23,10 +24,11 @@ public class Computer extends Player {
 	
 	public Computer(String name, int level) {
 		super(name);
+		this.level = level;
 		pick = new LinkedList<>();
 		solutions = new ArrayList<Solution>();
 	}
-
+	
 	public Computer(String name) {
 		super(name);
 		pick = new LinkedList<>();
@@ -38,17 +40,11 @@ public class Computer extends Player {
 	}
 	
 	public ArrayList<Solution> getSolutions()  {
-//		ArrayList<Solution> currentSolution = new ArrayList<>();
-//		for(Solution value: solutions) {
-//			try {
-//				currentSolution.add((Solution) value.clone());
-//			}
-//			catch(CloneNotSupportedException e) {
-//				e.printStackTrace();
-//			}
-//		}
-//		return currentSolution;
 		return solutions;
+	}
+	
+	public int getLevel() {
+		return level;
 	}
 
 	public static String generateName() {

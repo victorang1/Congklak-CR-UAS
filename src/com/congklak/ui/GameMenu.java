@@ -58,44 +58,18 @@ public class GameMenu {
 		while (true) {
 			int hole = -1;
 			CharacterMenu currentPlayerMenu = null;
-			String label = ""; 
 			if (turn % 2 == 1) {
 				currentPlayerMenu = player1;
-				label = player1.getLabel();
 			} else {
 				currentPlayerMenu = player2;
-				label = player2.getLabel();
 			}
 			
 			Player currentPlayer = currentPlayerMenu.getPlayer();
 			
-			if (currentPlayer.hasMove() == false) {
-				++turn;
-				printBoard();
-				System.out.println(currentPlayer.getName() + " has't move");
-				System.out.print("Press enter to continue");
-				scan.nextLine();
-				continue;
-			}
+			if(!isCurrentPlayerHasMove(currentPlayer)) continue;
 			
 			printBoard();
-			if (label.contains("Player")) { // is player
-				hole = currentPlayerMenu.inputHole();
-			} else { // is computer
-				Computer comp = (Computer) player2.getPlayer();
-				if (comp.getPick().isEmpty()) {
-					GameState state = new GameState(player1.getPlayer().clone(), player2.getPlayer().clone());
-					comp.doCombination(state, difficulty.getLevel());
-					int bound = (int) Math.ceil(comp.getSolutions().size() * difficulty.getRatio());
-					for (Integer pick : comp.getSolutions().get(rand.nextInt(bound)).getPicks()) {
-						comp.getPick().add(pick);
-					}
-				}
-				hole = comp.getPick().remove();
-				System.out.println("Computer choose: " + hole);
-				System.out.print("Press enter to continue");
-				scan.nextLine();
-			}
+			hole = getHole(hole, currentPlayerMenu);
 			
 			int take = 0;
 			int currentIndex = hole;
@@ -165,7 +139,10 @@ public class GameMenu {
 				scan.nextLine();
 			}
 		}
-		
+		printResult();
+	}
+	
+	private void printResult() {
 		printBoard();
 		if(player1.getPlayer().getBig() == player2.getPlayer().getBig()) {
 			player1.printDraw();
@@ -174,6 +151,39 @@ public class GameMenu {
 		} else {
 			player2.printWin();
 		}
+	}
+	
+	private boolean isCurrentPlayerHasMove(Player currentPlayer) {
+		if (!currentPlayer.hasMove()) {
+			++turn;
+			printBoard();
+			System.out.println(currentPlayer.getName() + " has't move");
+			System.out.print("Press enter to continue");
+			scan.nextLine();
+			return false;
+		}
+		return true;
+	}
+	
+	private int getHole(int hole, CharacterMenu currentPlayerMenu) {
+		if (currentPlayerMenu.getLabel().contains("Player")) { // is player
+			hole = currentPlayerMenu.inputHole();
+		} else { // is computer
+			Computer comp = (Computer) player2.getPlayer();
+			if (comp.getPick().isEmpty()) {
+				GameState state = new GameState(player1.getPlayer().clone(), player2.getPlayer().clone());
+				comp.doCombination(state, comp.getLevel());
+				int bound = (int) Math.ceil(comp.getSolutions().size() * difficulty.getRatio());
+				for (Integer pick : comp.getSolutions().get(rand.nextInt(bound)).getPicks()) {
+					comp.getPick().add(pick);
+				}
+			}
+			hole = comp.getPick().remove();
+			System.out.println("Computer choose: " + hole);
+			System.out.print("Press enter to continue");
+			scan.nextLine();
+		}
+		return hole;
 	}
 	
 	private void printBoard() {
